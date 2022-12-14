@@ -193,11 +193,6 @@ public class Product extends Entity {
         private Product product;
         private int quantity;
 
-        public BillItem(Product product, int quantity) {
-            this.product = product;
-            this.quantity = quantity;
-        }
-
         public BillItem() {
         }
 
@@ -205,7 +200,7 @@ public class Product extends Entity {
             return getProduct().getPrice() * getQuantity();
         }
 
-        public void append(int quantity) {
+        public void append(int quantity) throws Exception {
             this.setQuantity(this.getQuantity() + quantity);
         }
 
@@ -221,8 +216,13 @@ public class Product extends Entity {
             return quantity;
         }
 
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
+        public void setQuantity(int quantity) throws Exception {
+            if (quantity > 0) {
+                this.quantity = quantity;
+
+            } else {
+                throw new Exception("The number of products is invalid!(Must be greater than 0)");
+            }
         }
 
         @Override

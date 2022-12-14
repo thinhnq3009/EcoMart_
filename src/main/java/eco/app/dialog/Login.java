@@ -7,6 +7,7 @@ package eco.app.dialog;
 import eco.app.dao.EmployeeDao;
 import eco.app.dialog.MessageDialog.MessageType;
 import eco.app.entity.Employee;
+import eco.app.helper.EncryptionHelper;
 import eco.app.helper.MessageHelper;
 import eco.app.helper.SaveData;
 import eco.app.helper.ShareData;
@@ -260,7 +261,8 @@ public class Login extends javax.swing.JDialog {
             Employee employee = dao.findByUsername(username);
 
             if (employee != null) {
-                if (employee.getPassword().endsWith(password)) {
+                // if (employee.getPassword().endsWith(password)) {
+                if (EncryptionHelper.verify(password, employee.getPassword())) {
                     ShareData.USER_LOGIN = employee;
                     dispose();
                 } else {
@@ -271,7 +273,6 @@ public class Login extends javax.swing.JDialog {
             }
 
         } catch (Exception e) {
-            MessageHelper.showException(this, e);
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

@@ -23,7 +23,10 @@ public class Main extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setIconImage(new ImageHelper().openImage("app-logo.png").getImage());
+    }
 
+    public void updateInfo() {
+        mainFrom1.updateInfo();
     }
 
     /**
@@ -35,7 +38,7 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainFrom1 = new eco.app.panel.EmployeeMainPanel();
+        mainFrom1 = new eco.app.panel.ManagerMainPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Eco_Mart Management");
@@ -97,11 +100,12 @@ public class Main extends javax.swing.JFrame {
                 }
 
                 main.setVisible(true);
+                main.updateInfo();
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private eco.app.panel.EmployeeMainPanel mainFrom1;
+    private eco.app.panel.ManagerMainPanel mainFrom1;
     // End of variables declaration//GEN-END:variables
 }

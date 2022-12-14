@@ -26,6 +26,8 @@ import eco.app.myswing.ScrollBarCustom;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -88,45 +90,51 @@ public class SellingPanel extends javax.swing.JPanel {
      * Initialization event when click button add product in <code>ProductItem<code> panel
      */
     private void initProductItemEvent() {
-        itemListener = new ProductItemListener() {
-            @Override
-            public void onClick(Product product, JTextField textField) {
+        itemListener = (Product product, JTextField textField) -> {
+            try {
+                int quantity = Integer.parseInt(textField.getText());
 
-                try {
-                    int quantity = Integer.parseInt(textField.getText());
-
-                    // Before append to order check quantity need to append with product remain
-                    if (!validateQuantityProduct(product, quantity)) {
-                        String message = "Not enough products to add to the invoice. Try with less quantity";
-                        MessageHelper.showErrorMessage(SellingPanel.this, message);
-                        return;
-                    }
-
-                    product.sell(quantity);
-
-                    BillItem item = new BillItem(product, quantity);
-
-                    /* 
-                    Check this product has been added
-                    If it added, increase number of this product
-                     */
-                    for (BillItem billItem : productsInBill) {
-                        if (product.equals(billItem.getProduct())) {
-                            billItem.append(quantity);
-                            reloadBill();
-                            return;
-                        }
-                    }
-
-                    productsInBill.add(item);
-                    reloadBill();
-
-                } catch (NumberFormatException e) { // Catch exception at Integer.parseInt("...");
-                    MessageHelper.showException(SellingPanel.this, e);
+                // Before append to order check quantity need to append with product remain
+                if (!validateQuantityProduct(product, quantity)) {
+                    String message = "Not enough products to add to the invoice. Try with less quantity";
+                    MessageHelper.showErrorMessage(SellingPanel.this, message);
+                    return;
                 }
 
-            }
+                BillItem item = new BillItem();
+                item.setProduct(product);
+                try {
+                    item.setQuantity(quantity);
+                } catch (Exception ex) {
+                    MessageHelper.showException(this, ex);
+                }
 
+                /*
+                Check this product has been added
+                If it added, increase number of this product
+                 */
+                for (BillItem billItem : productsInBill) {
+                    if (product.equals(billItem.getProduct())) {
+                        try {
+                            billItem.append(quantity);
+
+                        } catch (Exception ex) {
+                            MessageHelper.showException(this, ex);
+                        } finally {
+                            reloadBill();
+                        }
+                        return;
+                    }
+                }
+
+                product.sell(quantity);
+
+                productsInBill.add(item);
+                reloadBill();
+
+            } catch (NumberFormatException e) { // Catch exception at Integer.parseInt("...");
+                MessageHelper.showException(SellingPanel.this, e);
+            }
         };
 
     }
@@ -802,7 +810,7 @@ public class SellingPanel extends javax.swing.JPanel {
     }// GEN-LAST:event_pnOrderComponentResized
 
     private void btnReloadActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnReloadActionPerformed
-        
+
         cbbCategory.setSelectedIndex(0);
         cbbBrand.setSelectedIndex(0);
         getAllProduct();

@@ -219,6 +219,7 @@ public class VoucherPanel extends javax.swing.JPanel {
 
     /**
      * Add new row to <code>tblVoucher</code> and reload text in label
+     
      *
      * @param model
      * @param voucher

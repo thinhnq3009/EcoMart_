@@ -58,7 +58,6 @@ public class EmployeeDao extends EntityDao {
 
         return readResultSet(rs);
     }
-    
 
     public Employee findByUsername(String username) throws Exception {
         String sql = "SELECT * FROM Employee WHERE username = ?";
@@ -66,7 +65,7 @@ public class EmployeeDao extends EntityDao {
         ResultSet rs = DatabaseHelper.excuteQuery(sql, username);
 
         List<Employee> result = readResultSet(rs);
-        
+
         return result.isEmpty() ? null : result.get(0);
     }
 
@@ -75,30 +74,58 @@ public class EmployeeDao extends EntityDao {
 
         validate(e);
 
-        String sql = "UPDATE Employee"
-                + " SET "
-                + " username = ?,"
-                + " password = ?,"
-                + " fullname = ?,"
-                + " gender = ?,"
-                + " email = ?,"
-                + " phone = ?,"
-                + " address = ?,"
-                + " salary = ?,"
-                + " sold_out = ?"
-                + " WHERE id = ?";
-        Object[] obj = EntityHelper.getData(e,
-                "username",
-                "password",
-                "fullname",
-                "gender",
-                "email",
-                "phone",
-                "address",
-                "salary",
-                "soldOut",
-                "id");
-        return DatabaseHelper.excuteUpdate(sql, obj);
+        Employee employee = (Employee) e;
+
+        if (employee.getPassword().isEmpty() || employee.getPassword() == null) {
+            String sql = "UPDATE Employee"
+                    + " SET "
+                    + " username = ?,"
+                    + " fullname = ?,"
+                    + " gender = ?,"
+                    + " email = ?,"
+                    + " phone = ?,"
+                    + " address = ?,"
+                    + " salary = ?,"
+                    + " sold_out = ?"
+                    + " WHERE id = ?";
+            Object[] obj = EntityHelper.getData(e,
+                    "username",
+                    "fullname",
+                    "gender",
+                    "email",
+                    "phone",
+                    "address",
+                    "salary",
+                    "soldOut",
+                    "id");
+            return DatabaseHelper.excuteUpdate(sql, obj);
+        } else {
+            String sql = "UPDATE Employee"
+                    + " SET "
+                    + " username = ?,"
+                    + " password = ?,"
+                    + " fullname = ?,"
+                    + " gender = ?,"
+                    + " email = ?,"
+                    + " phone = ?,"
+                    + " address = ?,"
+                    + " salary = ?,"
+                    + " sold_out = ?"
+                    + " WHERE id = ?";
+            Object[] obj = EntityHelper.getData(e,
+                    "username",
+                    "password",
+                    "fullname",
+                    "gender",
+                    "email",
+                    "phone",
+                    "address",
+                    "salary",
+                    "soldOut",
+                    "id");
+            return DatabaseHelper.excuteUpdate(sql, obj);
+        }
+
     }
 
     @Override
@@ -140,7 +167,7 @@ public class EmployeeDao extends EntityDao {
                 "phone",
                 "address",
                 "salary",
-                "soldOut", 
+                "soldOut",
                 "note");
         return DatabaseHelper.excuteUpdate(sql, obj);
     }

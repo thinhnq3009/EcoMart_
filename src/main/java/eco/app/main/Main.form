@@ -40,7 +40,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="eco.app.panel.EmployeeMainPanel" name="mainFrom1">
+    <Component class="eco.app.panel.ManagerMainPanel" name="mainFrom1">
     </Component>
   </SubComponents>
 </Form>

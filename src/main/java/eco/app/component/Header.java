@@ -4,7 +4,9 @@
  */
 package eco.app.component;
 
+import eco.app.entity.Employee;
 import eco.app.helper.SaveData;
+import eco.app.helper.ShareData;
 import eco.app.myswing.ButtonRandius;
 
 /**
@@ -19,6 +21,23 @@ public class Header extends javax.swing.JPanel {
     public Header() {
         initComponents();
         setBackground(SaveData.BG_HEADER);
+
+        init();
+
+    }
+
+    private void init() {
+        updateInfo();
+    }
+
+    public void updateInfo() {
+        if (ShareData.USER_LOGIN != null) {
+
+            Employee employee = ShareData.USER_LOGIN;
+
+            lblUsername.setText(employee.getFullname());
+            lblRole.setText(employee.isIsAdministrator() ? "Quản lý" : "Nhân viên bán hàng");
+        }
     }
 
     public ButtonRandius getBtnShow() {
@@ -29,9 +48,6 @@ public class Header extends javax.swing.JPanel {
         this.btnShow = btnShow;
     }
 
-    
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,11 +58,15 @@ public class Header extends javax.swing.JPanel {
     private void initComponents() {
 
         btnShow = new eco.app.myswing.ButtonRandius();
+        jPanel1 = new javax.swing.JPanel();
+        lblUsername = new javax.swing.JLabel();
+        lblRole = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(121, 218, 232));
         setMaximumSize(new java.awt.Dimension(9999, 60));
         setMinimumSize(new java.awt.Dimension(433, 60));
         setPreferredSize(new java.awt.Dimension(533, 60));
+        setLayout(new java.awt.BorderLayout());
 
         btnShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eco/app/icon/menu.png"))); // NOI18N
         btnShow.setText(" ");
@@ -60,30 +80,36 @@ public class Header extends javax.swing.JPanel {
                 btnShowActionPerformed(evt);
             }
         });
+        add(btnShow, java.awt.BorderLayout.LINE_START);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btnShow, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 474, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnShow, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 15));
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.GridLayout(2, 1));
+
+        lblUsername.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        lblUsername.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblUsername.setText("Username");
+        lblUsername.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        jPanel1.add(lblUsername);
+
+        lblRole.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        lblRole.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblRole.setText("Role");
+        lblRole.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel1.add(lblRole);
+
+        add(jPanel1, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowActionPerformed
-        
+
     }//GEN-LAST:event_btnShowActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private eco.app.myswing.ButtonRandius btnShow;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblRole;
+    private javax.swing.JLabel lblUsername;
     // End of variables declaration//GEN-END:variables
 }
